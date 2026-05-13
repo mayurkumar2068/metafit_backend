@@ -29,7 +29,15 @@ SECRET_KEY = 'django-insecure-lqb3a0*m3ufc*a^y*kxa7cu8%a(1kfcd))0rqa4p(rzyir$-vi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Comma-separated in .env, e.g. ALLOWED_HOSTS=api.example.com,51.21.196.50
+# When DEBUG is True and unset, allow any Host (dev/demo only).
+_allowed = os.getenv('ALLOWED_HOSTS', '').strip()
+if _allowed:
+    ALLOWED_HOSTS = [h.strip() for h in _allowed.split(',') if h.strip()]
+elif DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
